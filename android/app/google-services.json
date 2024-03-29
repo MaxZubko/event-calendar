@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "326050983391",
+    "project_id": "event-calendar-3eb13",
+    "storage_bucket": "event-calendar-3eb13.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:326050983391:android:228e17811b35e885d5a86a",
+        "android_client_info": {
+          "package_name": "com.example.event_calendar_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjcT65MQetjgP1hzGaa-MLt2wxa5D_a4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
