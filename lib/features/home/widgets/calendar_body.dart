@@ -1,3 +1,4 @@
+import 'package:event_calendar_app/cubit/calendar_event_cubit.dart';
 import 'package:event_calendar_app/features/home/cubit/calendar_cubit.dart';
 import 'package:event_calendar_app/features/home/widgets/calendar_week_days.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,8 @@ class _CalendarBodyState extends State<CalendarBody> {
                     calendarState.currentDate.month, 0)
                 .weekday;
 
+            final eventsCubit = context.watch<CalendarEventCubit>();
+
             // so that the first line with dates is not empty
             if (firstDayOfWeek > 6) {
               firstDayOfWeek = 0;
@@ -49,27 +52,34 @@ class _CalendarBodyState extends State<CalendarBody> {
                       return Container();
                     }
 
+                    final bool hasEventForDate = eventsCubit.hasEventForDate(
+                      dateTime: DateTime(
+                        calendarState.currentDate.year,
+                        calendarState.currentDate.month,
+                        day,
+                      ),
+                    );
+
                     return Column(
                       children: [
                         Container(
                           alignment: Alignment.center,
                           child: Text(day.toString()),
                         ),
-                        // Container(
-                        //   width: 10,
-                        //   height: 10,
-                        //   alignment: Alignment.center,
-                        //   padding: const EdgeInsets.symmetric(vertical: 8),
-                        //   decoration: const BoxDecoration(
-                        //     shape: BoxShape.circle,
-                        //     color: Colors.red, // Цвет кружка
-                        //   ),
-                        //   child: Text(day.toString()),
-                        // ),
+                        if (hasEventForDate)
+                          Container(
+                            width: 10,
+                            height: 10,
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.red,
+                            ),
+                          ),
                       ],
                     );
                   },
-                  // childCount: daysInMonth + firstDayOfWeek,
                 ),
               ),
             );

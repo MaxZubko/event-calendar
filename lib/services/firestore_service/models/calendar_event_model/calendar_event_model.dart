@@ -14,10 +14,13 @@ class CalendarEventModel {
   )
   final DateTime endTime;
 
+  final String eventId;
+
   CalendarEventModel({
     required this.title,
     required this.startTime,
     required this.endTime,
+    required this.eventId,
   });
 
   factory CalendarEventModel.fromFirestore(Map<String, dynamic> json) =>

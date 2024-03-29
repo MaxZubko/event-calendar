@@ -12,6 +12,7 @@ CalendarEventModel _$CalendarEventModelFromJson(Map<String, dynamic> json) =>
       startTime: DateTime.parse(json['startTime'] as String),
       endTime:
           CalendarEventModel._dateTimeFromFirestore(json['endTime'] as int),
+      eventId: json['eventId'] as String,
     );
 
 Map<String, dynamic> _$CalendarEventModelToJson(CalendarEventModel instance) =>
@@ -19,4 +20,5 @@ Map<String, dynamic> _$CalendarEventModelToJson(CalendarEventModel instance) =>
       'title': instance.title,
       'startTime': instance.startTime.toIso8601String(),
       'endTime': CalendarEventModel._dateTimeToFirestore(instance.endTime),
+      'eventId': instance.eventId,
     };

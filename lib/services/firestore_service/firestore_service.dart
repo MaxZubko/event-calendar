@@ -10,6 +10,7 @@ class FirestoreService implements FirestoreServiceInterface {
 
   @override
   CollectionReference getCollection() {
+    // TODO make it a constant
     return _db.collection('events');
   }
 
@@ -54,12 +55,6 @@ class FirestoreService implements FirestoreServiceInterface {
     };
 
     await getCollection().doc(docId).update(data);
-  }
-
-  @override
-  Future<void> updateEvent({required String docId}) async {
-    // TODO: implement updateEvent
-    throw UnimplementedError();
   }
 
   Future<bool> _checkIfDocExists(String docId) async {
