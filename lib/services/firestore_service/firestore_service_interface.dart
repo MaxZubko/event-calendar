@@ -8,7 +8,6 @@ abstract interface class FirestoreServiceInterface {
     required String docId,
   });
   Future<List<CalendarEventModel>> getEvents({required String docId});
-  Future<void> updateEvent({required String docId});
   Future<void> deleteEvent({
     required CalendarEventModel event,
     required String docId,
