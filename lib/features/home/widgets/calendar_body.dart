@@ -15,13 +15,13 @@ class _CalendarBodyState extends State<CalendarBody> {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
+      physics: const NeverScrollableScrollPhysics(),
       slivers: [
         const SliverToBoxAdapter(
           child: CalendarWeekDays(),
         ),
-        Builder(
-          builder: (context) {
-            final calendarState = context.watch<CalendarCubit>().state;
+        BlocBuilder<CalendarCubit, CalendarState>(
+          builder: (context, calendarState) {
             final daysInMonth = DateTime(calendarState.currentDate.year,
                     calendarState.currentDate.month + 1, 0)
                 .day;
@@ -29,59 +29,67 @@ class _CalendarBodyState extends State<CalendarBody> {
                     calendarState.currentDate.month, 0)
                 .weekday;
 
-            final eventsCubit = context.watch<CalendarEventCubit>();
-
             // so that the first line with dates is not empty
             if (firstDayOfWeek > 6) {
               firstDayOfWeek = 0;
             }
 
-            return SliverPadding(
-              padding: const EdgeInsets.only(top: 20),
-              sliver: SliverGrid(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 7,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 8,
-                ),
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    final day = index + 1 - firstDayOfWeek;
+            return BlocBuilder<CalendarEventCubit, CalendarEventState>(
+              builder: (context, eventState) {
+                final eventsCubit = context.read<CalendarEventCubit>();
 
-                    if (day <= 0 || day > daysInMonth) {
-                      return Container();
-                    }
+                return SliverPadding(
+                  padding: const EdgeInsets.only(top: 20),
+                  sliver: SliverGrid(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 7,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
+                    ),
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        final day = index + 1 - firstDayOfWeek;
 
-                    final bool hasEventForDate = eventsCubit.hasEventForDate(
-                      dateTime: DateTime(
-                        calendarState.currentDate.year,
-                        calendarState.currentDate.month,
-                        day,
-                      ),
-                    );
+                        if (day <= 0 || day > daysInMonth) {
+                          return Container();
+                        }
 
-                    return Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          child: Text(day.toString()),
-                        ),
-                        if (hasEventForDate)
-                          Container(
-                            width: 10,
-                            height: 10,
-                            alignment: Alignment.center,
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.red,
-                            ),
+                        final bool hasEventForDate =
+                            eventsCubit.hasEventForDate(
+                          dateTime: DateTime(
+                            calendarState.currentDate.year,
+                            calendarState.currentDate.month,
+                            day,
                           ),
-                      ],
-                    );
-                  },
-                ),
-              ),
+                        );
+
+                        return Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              child: Text(day.toString()),
+                            ),
+                            if (hasEventForDate)
+                              Container(
+                                width: 5,
+                                height: 5,
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 8,
+                                ),
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                );
+              },
             );
           },
         ),

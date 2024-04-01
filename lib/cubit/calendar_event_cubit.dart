@@ -44,7 +44,7 @@ class CalendarEventCubit extends Cubit<CalendarEventState> {
       await _service.addEvent(event: event, docId: _docId!);
       _events.add(event);
 
-      emit(CalendarEventLoaded(events: _events));
+      emit(CalendarEventLoaded(events: List.of(_events)));
     } catch (e) {
       emit(CalendarEventFailure(error: e));
     }
@@ -58,7 +58,7 @@ class CalendarEventCubit extends Cubit<CalendarEventState> {
 
       _events.removeWhere((element) => element.eventId == event.eventId);
 
-      emit(CalendarEventLoaded(events: _events));
+      emit(CalendarEventLoaded(events: List.of(_events)));
     } catch (e) {
       emit(CalendarEventFailure(error: e));
     }
