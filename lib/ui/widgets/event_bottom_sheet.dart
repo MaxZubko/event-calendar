@@ -1,14 +1,16 @@
 import 'dart:io';
 
-import 'package:event_calendar_app/services/firestore_service/models/calendar_event_model/calendar_event_model.dart';
-import 'package:event_calendar_app/utils/utils.dart';
-import 'package:event_calendar_app/ui/widgets/widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:event_calendar_app/constants/constants.dart' as constants;
+import 'package:event_calendar_app/features/home/cubit/calendar_cubit.dart';
+import 'package:event_calendar_app/services/firestore_service/models/calendar_event_model/calendar_event_model.dart';
+import 'package:event_calendar_app/ui/widgets/widget.dart';
+import 'package:event_calendar_app/utils/utils.dart';
 
 class EventBottomSheet extends StatefulWidget {
   final CalendarEventModel? eventModel;
@@ -34,7 +36,7 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
   @override
   void initState() {
     _initializeValues();
-    _now = DateTime.now();
+    _now = context.read<CalendarCubit>().state.selectedDate;
     _isIos = Platform.isIOS;
     super.initState();
   }
@@ -68,16 +70,18 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
                   ),
                   child: TextField(
                     controller: _controller..text = _title ?? '',
-                    decoration: const InputDecoration(
+                    style: const TextStyle(color: constants.Colors.white),
+                    decoration: InputDecoration(
                       hintText: 'Title',
-                      hintStyle: TextStyle(color: constants.Colors.white),
-                      contentPadding: EdgeInsets.symmetric(
+                      hintStyle: TextStyle(
+                          color: constants.Colors.grey.withOpacity(0.5)),
+                      contentPadding: const EdgeInsets.symmetric(
                         horizontal: 12,
                       ),
-                      enabledBorder: OutlineInputBorder(
+                      enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide.none,
                       ),
-                      border: OutlineInputBorder(
+                      border: const OutlineInputBorder(
                         borderSide: BorderSide.none,
                       ),
                     ),

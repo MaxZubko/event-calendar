@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:event_calendar_app/constants/constants.dart';
 import 'package:event_calendar_app/services/services.dart';
 
 class FirestoreService implements FirestoreServiceInterface {
@@ -10,8 +11,7 @@ class FirestoreService implements FirestoreServiceInterface {
 
   @override
   CollectionReference getCollection() {
-    // TODO make it a constant
-    return _db.collection('events');
+    return _db.collection(FIREBSTORE_COLLECTION);
   }
 
   @override

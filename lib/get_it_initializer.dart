@@ -25,6 +25,8 @@ void getItInitializer() {
     LocalDatabaseService(),
   );
 
+  // registerSingleton because you need to immediately download the list of events
+  // from Firestore and save it to a variable inside Cubit for further work with it
   getIt.registerSingleton<CalendarEventCubit>(
     CalendarEventCubit(
       service: getIt<FirestoreService>(),
