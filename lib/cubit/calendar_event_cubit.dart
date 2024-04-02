@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:event_calendar_app/services/services.dart';
@@ -19,6 +21,9 @@ class CalendarEventCubit extends Cubit<CalendarEventState> {
   final FirestoreService _service;
   final LocalDatabaseService _localDb;
 
+  final _controller = StreamController<List<CalendarEventModel>>.broadcast();
+  Stream<List<CalendarEventModel>> get listStream => _controller.stream;
+
   List<CalendarEventModel> _events = [];
   String? _docId;
 
@@ -30,8 +35,9 @@ class CalendarEventCubit extends Cubit<CalendarEventState> {
       _docId ??= await _getDocId();
 
       _events = await _service.getEvents(docId: _docId!);
+      _controller.add(_events);
 
-      emit(CalendarEventLoaded(events: _events));
+      // emit(CalendarEventLoaded(events: _events));
     } catch (e) {
       emit(CalendarEventFailure(error: e));
     }
@@ -44,7 +50,8 @@ class CalendarEventCubit extends Cubit<CalendarEventState> {
       await _service.addEvent(event: event, docId: _docId!);
       _events.add(event);
 
-      emit(CalendarEventLoaded(events: List.of(_events)));
+      _controller.add(_events);
+      // emit(CalendarEventLoaded(events: List.of(_events)));
     } catch (e) {
       emit(CalendarEventFailure(error: e));
     }
@@ -58,10 +65,23 @@ class CalendarEventCubit extends Cubit<CalendarEventState> {
 
       _events.removeWhere((element) => element.eventId == event.eventId);
 
-      emit(CalendarEventLoaded(events: List.of(_events)));
+      _controller.add(_events);
+      // emit(CalendarEventLoaded(events: List.of(_events)));
     } catch (e) {
       emit(CalendarEventFailure(error: e));
     }
+  }
+
+  List<CalendarEventModel> getEventsByDate({required DateTime date}) {
+    List<CalendarEventModel> filteredEvents = _events
+        .where(
+          (event) =>
+              event.startTime.year == date.year &&
+              event.startTime.month == date.month &&
+              event.startTime.day == date.day,
+        )
+        .toList();
+    return filteredEvents;
   }
 
   Future<String> _getDocId() async {
@@ -77,5 +97,11 @@ class CalendarEventCubit extends Cubit<CalendarEventState> {
           event.startTime.month == dateTime.month &&
           event.startTime.day == dateTime.day,
     );
+  }
+
+  @override
+  Future<void> close() {
+    _controller.close();
+    return super.close();
   }
 }

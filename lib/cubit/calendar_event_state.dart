@@ -21,6 +21,10 @@ final class CalendarEventLoaded extends CalendarEventState {
   List<Object> get props => [events];
 }
 
+final class CalendarEventAdded extends CalendarEventState {}
+
+final class CalendarEventDeleted extends CalendarEventState {}
+
 final class CalendarEventFailure extends CalendarEventState {
   const CalendarEventFailure({required this.error});
 
