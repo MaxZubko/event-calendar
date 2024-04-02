@@ -31,4 +31,7 @@ void getItInitializer() {
       localDb: LocalDatabaseService(),
     ),
   );
+
+  GetIt.I.registerLazySingleton<LocalNotificationService>(
+      () => LocalNotificationService());
 }

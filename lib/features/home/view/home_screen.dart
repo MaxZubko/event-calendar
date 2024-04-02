@@ -1,6 +1,7 @@
 import 'package:event_calendar_app/cubit/calendar_event_cubit.dart';
 import 'package:event_calendar_app/features/home/home.dart';
-import 'package:event_calendar_app/services/firestore_service/models/calendar_event_model/calendar_event_model.dart';
+import 'package:event_calendar_app/get_it_initializer.dart';
+import 'package:event_calendar_app/services/services.dart';
 import 'package:event_calendar_app/ui/widgets/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,8 +25,8 @@ class HomeScreen extends StatelessWidget {
               CalendarHeader(),
               SizedBox(height: 20),
               Flexible(child: CalendarBody()),
-              SizedBox(height: 20),
-              Expanded(flex: 2, child: EventsList()),
+              Flexible(child: EventsList()),
+              Expanded(child: SizedBox())
             ],
           ),
         ),
@@ -46,7 +47,14 @@ class HomeScreen extends StatelessWidget {
       ),
     );
     if (eventModel != null) {
-      eventCubit.addEvent(event: eventModel);
+      await eventCubit.addEvent(event: eventModel);
+      await getIt<LocalNotificationService>().showScheduleNotification(
+        title: 'Event',
+        body: eventModel.title,
+        payload: '',
+        selectedDate: eventModel.startTime,
+        id: eventModel.notifyId,
+      );
     }
   }
 }
