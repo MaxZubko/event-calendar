@@ -42,37 +42,38 @@ final lightTheme = ThemeData(
 );
 
 const _textTheme = TextTheme(
-    headlineMedium: TextStyle(
-      fontSize: 22,
-      fontWeight: FontWeight.w400,
-    ),
-    titleLarge: TextStyle(
-      fontSize: 18,
-      fontWeight: FontWeight.w700,
-      color: Colors.white,
-    ),
-    titleMedium: TextStyle(
-      fontSize: 18,
-      fontWeight: FontWeight.w500,
-      color: Colors.white,
-    ),
-    titleSmall: TextStyle(
-      fontSize: 18,
-      fontWeight: FontWeight.w400,
-      color: Colors.white,
-    ),
-    bodyLarge: TextStyle(
-      fontSize: 18,
-      fontWeight: FontWeight.w500,
-      color: constants.Colors.grey,
-    ),
-    bodyMedium: TextStyle(
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
-      color: constants.Colors.grey,
-    ),
-    labelMedium: TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.w400,
-      color: constants.Colors.redSelected,
-    ));
+  headlineMedium: TextStyle(
+    fontSize: 22,
+    fontWeight: FontWeight.w400,
+  ),
+  titleLarge: TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w700,
+    color: Colors.white,
+  ),
+  titleMedium: TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+    color: Colors.white,
+  ),
+  titleSmall: TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w400,
+    color: Colors.white,
+  ),
+  bodyLarge: TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+    color: constants.Colors.grey,
+  ),
+  bodyMedium: TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: constants.Colors.grey,
+  ),
+  labelMedium: TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: constants.Colors.redSelected,
+  ),
+);

@@ -1,5 +1,7 @@
 import 'dart:math';
 
+/// [NotifyUtils] contains a method that generates an ID in int format from
+/// the timestamp of the start time of the event. ID is used to create local notifications
 class NotifyUtils {
   int creatingIdForNotify({required int timestamp}) {
     // Generating a random four-digit number

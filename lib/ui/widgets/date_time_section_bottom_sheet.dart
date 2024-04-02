@@ -19,9 +19,14 @@ class DateTimeSectionBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Row(
       children: [
-        Text(title),
+        Text(
+          title,
+          style: theme.textTheme.titleSmall,
+        ),
         const Expanded(child: SizedBox()),
         GestureDetector(
           onTap: onTapFirestBtn,
@@ -32,7 +37,10 @@ class DateTimeSectionBottomSheet extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8)),
             padding: const EdgeInsets.symmetric(horizontal: 15),
             alignment: Alignment.center,
-            child: Text(_formatDate(initDate)),
+            child: Text(
+              _formatDate(initDate),
+              style: theme.textTheme.bodyMedium,
+            ),
           ),
         ),
         const SizedBox(width: 5),
@@ -45,7 +53,8 @@ class DateTimeSectionBottomSheet extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8)),
             padding: const EdgeInsets.symmetric(horizontal: 15),
             alignment: Alignment.center,
-            child: Text(_formatTime(context, initTime)),
+            child: Text(_formatTime(context, initTime),
+                style: theme.textTheme.bodyMedium),
           ),
         ),
       ],

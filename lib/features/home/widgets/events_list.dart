@@ -1,11 +1,12 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+
 import 'package:event_calendar_app/cubit/calendar_event_cubit.dart';
 import 'package:event_calendar_app/features/home/cubit/calendar_cubit.dart';
 import 'package:event_calendar_app/router/app_route_name_constants.dart';
 import 'package:event_calendar_app/services/firestore_service/models/models.dart';
 import 'package:event_calendar_app/utils/utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 class EventsList extends StatelessWidget {
   const EventsList({super.key});
@@ -13,12 +14,10 @@ class EventsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final is24HourFormat = MediaQuery.of(context).alwaysUse24HourFormat;
 
     return CustomScrollView(
       slivers: [
-        const SliverToBoxAdapter(
-          child: Divider(),
-        ),
         const SliverToBoxAdapter(
           child: SizedBox(height: 15),
         ),
@@ -31,6 +30,7 @@ class EventsList extends StatelessWidget {
                 final eventsCubit = context.read<CalendarEventCubit>();
                 final List<CalendarEventModel> eventsList =
                     eventsCubit.getEventsByDate(date: selectedDate);
+                eventsList.sort((a, b) => a.startTime.compareTo(b.startTime));
 
                 if (eventsList.isNotEmpty) {
                   return SliverList.separated(
@@ -44,34 +44,40 @@ class EventsList extends StatelessWidget {
                           AppRouteNameConstants.eventDetailsRoutePath,
                           extra: eventsList[index],
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  DateTimeUtils.formatTime(
-                                    context,
-                                    eventsList[index].startTime,
+                        child: Container(
+                          width: double.infinity,
+                          color: Colors.transparent,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    DateTimeUtils.formatTime(
+                                      is24HourFormat: is24HourFormat,
+                                      dateTime: eventsList[index].startTime,
+                                    ),
+                                    style: theme.textTheme.bodyMedium,
                                   ),
-                                  style: theme.textTheme.bodyMedium,
-                                ),
-                                const Text(' - '),
-                                Text(
-                                  DateTimeUtils.formatTime(
-                                      context, eventsList[index].endTime),
-                                  style: theme.textTheme.bodyMedium,
-                                ),
-                              ],
-                            ),
-                            Text(
-                              eventsList[index].title,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: theme.textTheme.titleMedium,
-                            ),
-                          ],
+                                  const Text(' - '),
+                                  Text(
+                                    DateTimeUtils.formatTime(
+                                      is24HourFormat: is24HourFormat,
+                                      dateTime: eventsList[index].endTime,
+                                    ),
+                                    style: theme.textTheme.bodyMedium,
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                eventsList[index].title,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: theme.textTheme.titleMedium,
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },

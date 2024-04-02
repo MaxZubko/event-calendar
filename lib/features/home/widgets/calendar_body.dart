@@ -1,6 +1,6 @@
 import 'package:event_calendar_app/cubit/calendar_event_cubit.dart';
 import 'package:event_calendar_app/features/home/cubit/calendar_cubit.dart';
-import 'package:event_calendar_app/features/home/widgets/calendar_week_days.dart';
+import 'package:event_calendar_app/features/home/widgets/widget.dart';
 import 'package:event_calendar_app/services/firestore_service/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,12 +44,12 @@ class _CalendarBodyState extends State<CalendarBody> {
                 final eventsCubit = context.read<CalendarEventCubit>();
                 if (snapshot.hasData) {
                   return SliverPadding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 20),
                     sliver: SliverGrid(
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 7,
-                        crossAxisSpacing: 10,
+                        childAspectRatio: 0.9,
                       ),
                       delegate: SliverChildBuilderDelegate(
                         (BuildContext context, int index) {
@@ -86,6 +86,8 @@ class _CalendarBodyState extends State<CalendarBody> {
                             child: Column(
                               children: [
                                 Container(
+                                  height: 30,
+                                  width: 30,
                                   alignment: Alignment.center,
                                   decoration: isCurrent
                                       ? const BoxDecoration(
@@ -93,25 +95,33 @@ class _CalendarBodyState extends State<CalendarBody> {
                                           color: constants.Colors.greenSelected,
                                         )
                                       : null,
-                                  child: Text(
-                                    day.toString(),
-                                    style: isCurrent
-                                        ? theme.textTheme.bodyLarge!.copyWith(
-                                            color: constants.Colors.white)
-                                        : theme.textTheme.bodyLarge,
+                                  child: Container(
+                                    height: 35,
+                                    width: 35,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      day.toString(),
+                                      style: isCurrent
+                                          ? theme.textTheme.bodyLarge!.copyWith(
+                                              color: constants.Colors.white)
+                                          : theme.textTheme.bodyLarge,
+                                    ),
                                   ),
                                 ),
                                 if (hasEventForDate)
-                                  Container(
-                                    width: 5,
-                                    height: 5,
-                                    alignment: Alignment.center,
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 8,
-                                    ),
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.grey,
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 3),
+                                    child: Container(
+                                      width: 5,
+                                      height: 5,
+                                      alignment: Alignment.center,
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 8,
+                                      ),
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.grey,
+                                      ),
                                     ),
                                   ),
                               ],
