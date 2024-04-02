@@ -1,10 +1,11 @@
+import 'package:event_calendar_app/get_it_initializer.dart';
+import 'package:event_calendar_app/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import 'package:event_calendar_app/cubit/calendar_event_cubit.dart';
-import 'package:event_calendar_app/services/firestore_service/models/models.dart';
 import 'package:event_calendar_app/ui/widgets/widget.dart';
 import 'package:event_calendar_app/utils/utils.dart';
 
@@ -97,7 +98,7 @@ class EventDetailsScreen extends StatelessWidget {
     required CalendarEventModel model,
   }) async {
     final eventCubit = context.read<CalendarEventCubit>();
-    final eventModel = await showModalBottomSheet<CalendarEventModel>(
+    final newModel = await showModalBottomSheet<CalendarEventModel>(
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       elevation: 0,
@@ -109,9 +110,21 @@ class EventDetailsScreen extends StatelessWidget {
         ),
       ),
     );
-    if (eventModel != null) {
-      await eventCubit.deleteEvent(event: model);
-      await eventCubit.addEvent(event: eventModel).then(
+    if (newModel != null) {
+      await eventCubit.deleteEvent(event: model).then(
+            (value) async => await getIt<LocalNotificationService>()
+                .cancelNotification(model.notifyId),
+          );
+
+      await getIt<LocalNotificationService>().showScheduleNotification(
+        title: 'Event',
+        body: newModel.title,
+        payload: '',
+        selectedDate: newModel.startTime,
+        id: newModel.notifyId,
+      );
+
+      await eventCubit.addEvent(event: newModel).then(
             (value) => context.pop(),
           );
     }

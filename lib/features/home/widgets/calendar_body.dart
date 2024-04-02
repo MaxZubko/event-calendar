@@ -44,7 +44,7 @@ class _CalendarBodyState extends State<CalendarBody> {
                 final eventsCubit = context.read<CalendarEventCubit>();
                 if (snapshot.hasData) {
                   return SliverPadding(
-                    padding: const EdgeInsets.only(top: 20),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     sliver: SliverGrid(
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(

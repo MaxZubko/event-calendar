@@ -297,6 +297,10 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
           ),
         ),
         eventId: _eventId ?? const Uuid().v4(),
+        notifyId: NotifyUtils().creatingIdForNotify(
+          timestamp:
+              _formatTime(_startDate, _startTime, _now).millisecondsSinceEpoch,
+        ),
       ),
     );
   }
