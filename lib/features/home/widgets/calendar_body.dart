@@ -16,6 +16,8 @@ class CalendarBody extends StatefulWidget {
 class _CalendarBodyState extends State<CalendarBody> {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return CustomScrollView(
       physics: const NeverScrollableScrollPhysics(),
       slivers: [
@@ -91,7 +93,13 @@ class _CalendarBodyState extends State<CalendarBody> {
                                           color: constants.Colors.greenSelected,
                                         )
                                       : null,
-                                  child: Text(day.toString()),
+                                  child: Text(
+                                    day.toString(),
+                                    style: isCurrent
+                                        ? theme.textTheme.bodyLarge!.copyWith(
+                                            color: constants.Colors.white)
+                                        : theme.textTheme.bodyLarge,
+                                  ),
                                 ),
                                 if (hasEventForDate)
                                   Container(

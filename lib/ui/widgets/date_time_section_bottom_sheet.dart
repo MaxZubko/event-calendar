@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:event_calendar_app/constants/constants.dart' as constants;
 
 class DateTimeSectionBottomSheet extends StatelessWidget {
   final String title;
@@ -27,7 +28,7 @@ class DateTimeSectionBottomSheet extends StatelessWidget {
           child: Container(
             height: 30,
             decoration: BoxDecoration(
-                color: Colors.grey[400],
+                color: constants.Colors.white.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8)),
             padding: const EdgeInsets.symmetric(horizontal: 15),
             alignment: Alignment.center,
@@ -40,7 +41,7 @@ class DateTimeSectionBottomSheet extends StatelessWidget {
           child: Container(
             height: 30,
             decoration: BoxDecoration(
-                color: Colors.grey[400],
+                color: constants.Colors.white.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8)),
             padding: const EdgeInsets.symmetric(horizontal: 15),
             alignment: Alignment.center,
