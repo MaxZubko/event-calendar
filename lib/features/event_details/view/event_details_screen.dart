@@ -91,6 +91,8 @@ class EventDetailsScreen extends StatelessWidget {
     await eventsCubit.deleteEvent(event: event).then(
           (value) => context.pop(),
         );
+
+    await getIt<LocalNotificationService>().cancelNotification(event.notifyId);
   }
 
   Future<void> _showSearchBottomSheet({
