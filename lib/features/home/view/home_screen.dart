@@ -1,8 +1,7 @@
 import 'package:event_calendar_app/cubit/calendar_event_cubit.dart';
 import 'package:event_calendar_app/features/home/home.dart';
-import 'package:event_calendar_app/features/home/widgets/calendar_body.dart';
 import 'package:event_calendar_app/services/firestore_service/models/calendar_event_model/calendar_event_model.dart';
-import 'package:event_calendar_app/widgets/widget.dart';
+import 'package:event_calendar_app/ui/widgets/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,7 +22,9 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: [
               CalendarHeader(),
-              Expanded(child: CalendarBody()),
+              Flexible(child: CalendarBody()),
+              SizedBox(height: 20),
+              Expanded(flex: 2, child: EventsList()),
             ],
           ),
         ),

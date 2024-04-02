@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:event_calendar_app/services/firestore_service/models/calendar_event_model/calendar_event_model.dart';
 import 'package:event_calendar_app/utils/utils.dart';
-import 'package:event_calendar_app/widgets/widget.dart';
+import 'package:event_calendar_app/ui/widgets/widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -92,7 +92,7 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: TextField(
-                    controller: _controller,
+                    controller: _controller..text = _title ?? '',
                     decoration: const InputDecoration(
                       hintText: 'Title',
                       hintStyle: TextStyle(color: Colors.black),
@@ -293,8 +293,8 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
   }
 
   DateTime _formatTime(DateTime? date, TimeOfDay? time, DateTime now) {
-    final _date = date ?? _now;
-    final _time = time ?? TimeOfDay.fromDateTime(_now);
+    final _date = date ?? now;
+    final _time = time ?? TimeOfDay.fromDateTime(now);
     final DateTime formattedTime =
         DateTime(_date.year, _date.month, _date.day, _time.hour, _time.minute);
 

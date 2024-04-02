@@ -2,5 +2,5 @@ class AppRouteNameConstants {
   // route Core
   static const String homeRoutePath = 'home';
   // child
-  static const String addEventRoutePath = 'add-event';
+  static const String eventDetailsRoutePath = 'event-details';
 }
