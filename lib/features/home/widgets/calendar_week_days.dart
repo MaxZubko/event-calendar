@@ -15,12 +15,17 @@ class CalendarWeekDays extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Row(
       children: _weekDays
           .map(
             (day) => Expanded(
               child: Center(
-                child: Text(day),
+                child: Text(
+                  day,
+                  style: theme.textTheme.titleMedium,
+                ),
               ),
             ),
           )

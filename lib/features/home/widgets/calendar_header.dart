@@ -9,25 +9,35 @@ class CalendarHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Row(
       children: [
+        const SizedBox(width: 8),
         BlocBuilder<CalendarCubit, CalendarState>(
           builder: (context, state) {
             return Text(
-              '${state.currentDate.month.toString()} ${state.currentDate.year.toString()}',
+              '${_getMonthName(state.currentDate.month)} ${state.currentDate.year.toString()}',
+              style: theme.textTheme.titleLarge,
             );
           },
         ),
         const Expanded(child: SizedBox()),
         IconButton(
-          icon: SvgPicture.asset(constants.Assets.arrowLeftSvg),
+          icon: SvgPicture.asset(
+            constants.Assets.arrowLeftSvg,
+            color: constants.Colors.white,
+          ),
           onPressed: () {
             final cubit = context.read<CalendarCubit>();
             cubit.previousMonth();
           },
         ),
         IconButton(
-          icon: SvgPicture.asset(constants.Assets.arrowRightSvg),
+          icon: SvgPicture.asset(
+            constants.Assets.arrowRightSvg,
+            color: constants.Colors.white,
+          ),
           onPressed: () {
             final cubit = context.read<CalendarCubit>();
             cubit.nextMonth();
@@ -35,5 +45,23 @@ class CalendarHeader extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String _getMonthName(int month) {
+    List<String> months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ];
+    return months[month - 1];
   }
 }

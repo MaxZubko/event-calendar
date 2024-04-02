@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:event_calendar_app/constants/constants.dart' as constants;
+
 class EventBottomSheet extends StatefulWidget {
   final CalendarEventModel? eventModel;
   const EventBottomSheet({super.key, this.eventModel});
@@ -39,48 +41,21 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).canvasColor,
-        borderRadius: const BorderRadius.vertical(
+      decoration: const BoxDecoration(
+        color: constants.Colors.dark,
+        borderRadius: BorderRadius.vertical(
           top: Radius.circular(20),
         ),
       ),
       child: SizedBox(
         width: double.infinity,
         child: CustomScrollView(
+          physics: const NeverScrollableScrollPhysics(),
           slivers: [
-            SliverAppBar(
-              pinned: true,
-              centerTitle: true,
-              leadingWidth: 90,
-              leading: TextButton(
-                onPressed: () {
-                  context.pop();
-                },
-                child: const Text(
-                  'Cancel',
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    _onTapEvent(context);
-                  },
-                  child: const Text(
-                    'Add',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
-              ],
-              title: const Text(
-                'New Event',
-                style: TextStyle(fontSize: 20),
-              ),
-              elevation: 0,
-              surfaceTintColor: Colors.transparent,
-            ),
+            _appBar(theme),
             _sliverGap(15),
             SliverToBoxAdapter(
               child: Padding(
@@ -88,14 +63,14 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
                 child: Container(
                   height: 45,
                   decoration: BoxDecoration(
-                    color: Colors.grey,
+                    color: constants.Colors.white.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: TextField(
                     controller: _controller..text = _title ?? '',
                     decoration: const InputDecoration(
                       hintText: 'Title',
-                      hintStyle: TextStyle(color: Colors.black),
+                      hintStyle: TextStyle(color: constants.Colors.white),
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: 12,
                       ),
@@ -121,7 +96,7 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                   decoration: BoxDecoration(
-                    color: Colors.grey,
+                    color: constants.Colors.white.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Column(
@@ -254,6 +229,40 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _appBar(ThemeData theme) {
+    return SliverAppBar(
+      pinned: true,
+      centerTitle: true,
+      leadingWidth: 90,
+      leading: TextButton(
+        onPressed: () {
+          context.pop();
+        },
+        child: Text(
+          'Cancel',
+          style: theme.textTheme.titleSmall,
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            _onTapEvent(context);
+          },
+          child: Text(
+            'Add',
+            style: theme.textTheme.titleSmall,
+          ),
+        ),
+      ],
+      title: Text(
+        'New Event',
+        style: theme.textTheme.titleLarge,
+      ),
+      elevation: 0,
+      surfaceTintColor: Colors.transparent,
     );
   }
 

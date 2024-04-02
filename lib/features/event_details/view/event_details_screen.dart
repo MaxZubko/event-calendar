@@ -1,11 +1,12 @@
-import 'package:event_calendar_app/cubit/calendar_event_cubit.dart';
-import 'package:event_calendar_app/services/firestore_service/models/models.dart';
-import 'package:event_calendar_app/utils/utils.dart';
-import 'package:event_calendar_app/ui/widgets/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+
+import 'package:event_calendar_app/cubit/calendar_event_cubit.dart';
+import 'package:event_calendar_app/services/firestore_service/models/models.dart';
+import 'package:event_calendar_app/ui/widgets/widget.dart';
+import 'package:event_calendar_app/utils/utils.dart';
 
 class EventDetailsScreen extends StatelessWidget {
   final CalendarEventModel eventModel;
@@ -16,6 +17,7 @@ class EventDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final formattedStartTime =
         DateTimeUtils.formatTime(context, eventModel.startTime);
     final formattedEndTime =
@@ -38,12 +40,20 @@ class EventDetailsScreen extends StatelessWidget {
           children: [
             Align(
               alignment: Alignment.topLeft,
-              child: Text(eventModel.title),
+              child: Text(
+                eventModel.title,
+                style: theme.textTheme.titleLarge,
+              ),
             ),
+            const SizedBox(height: 5),
             Text(
               _formatDate(eventModel.startTime),
+              style: theme.textTheme.bodyMedium,
             ),
-            Text(timeRange),
+            Text(
+              timeRange,
+              style: theme.textTheme.bodyMedium,
+            ),
             const Expanded(
               child: SizedBox(),
             ),
@@ -53,7 +63,10 @@ class EventDetailsScreen extends StatelessWidget {
                   context: context,
                   event: eventModel,
                 ),
-                child: const Text('Delete Event'),
+                child: Text(
+                  'Delete Event',
+                  style: theme.textTheme.labelMedium,
+                ),
               ),
             ),
             const SizedBox(height: 20),

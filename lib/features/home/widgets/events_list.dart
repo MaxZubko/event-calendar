@@ -16,6 +16,12 @@ class EventsList extends StatelessWidget {
 
     return CustomScrollView(
       slivers: [
+        const SliverToBoxAdapter(
+          child: Divider(),
+        ),
+        const SliverToBoxAdapter(
+          child: SizedBox(height: 15),
+        ),
         BlocSelector<CalendarCubit, CalendarState, DateTime>(
           selector: (state) => state.selectedDate,
           builder: (context, selectedDate) {
@@ -65,20 +71,6 @@ class EventsList extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               style: theme.textTheme.titleMedium,
                             ),
-
-                            // Column(
-                            //   crossAxisAlignment: CrossAxisAlignment.end,
-                            //   children: [
-                            //     Text(
-                            //       DateTimeUtils.formatTime(
-                            //           context, eventsList[index].startTime),
-                            //     ),
-                            //     Text(
-                            //       DateTimeUtils.formatTime(
-                            //           context, eventsList[index].endTime),
-                            //     ),
-                            //   ],
-                            // )
                           ],
                         ),
                       );

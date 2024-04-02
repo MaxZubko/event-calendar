@@ -18,10 +18,11 @@ class HomeScreen extends StatelessWidget {
       ),
       body: const SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40),
+          padding: EdgeInsets.symmetric(horizontal: 35),
           child: Column(
             children: [
               CalendarHeader(),
+              SizedBox(height: 20),
               Flexible(child: CalendarBody()),
               SizedBox(height: 20),
               Expanded(flex: 2, child: EventsList()),
@@ -40,7 +41,7 @@ class HomeScreen extends StatelessWidget {
       elevation: 0,
       context: context,
       builder: (context) => const Padding(
-        padding: EdgeInsets.only(top: 50),
+        padding: EdgeInsets.only(top: 100),
         child: EventBottomSheet(),
       ),
     );
