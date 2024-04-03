@@ -7,8 +7,13 @@ final darkTheme = ThemeData(
     color: constants.Colors.dark,
     titleTextStyle: _textTheme.headlineMedium,
     iconTheme: const IconThemeData(
-      color: Colors.white,
+      color: constants.Colors.white,
     ),
+  ),
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    selectedItemColor: constants.Colors.greenSelected,
+    unselectedItemColor: constants.Colors.white,
+    backgroundColor: constants.Colors.dark,
   ),
   dividerTheme: const DividerThemeData(
     color: constants.Colors.darkLight,
@@ -27,13 +32,18 @@ final lightTheme = ThemeData(
     color: constants.Colors.white,
     titleTextStyle: _textTheme.headlineMedium,
     iconTheme: const IconThemeData(
-      color: Colors.white,
+      color: constants.Colors.dark,
     ),
+  ),
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    selectedItemColor: constants.Colors.redSelected,
+    unselectedItemColor: constants.Colors.dark,
+    backgroundColor: constants.Colors.white,
   ),
   textTheme: _textTheme,
   scaffoldBackgroundColor: constants.Colors.white,
   dividerTheme: DividerThemeData(
-    color: Colors.grey.withOpacity(0.1),
+    color: constants.Colors.grey.withOpacity(0.5),
   ),
   colorScheme: ColorScheme.fromSeed(
     seedColor: constants.Colors.white,
@@ -43,37 +53,31 @@ final lightTheme = ThemeData(
 
 const _textTheme = TextTheme(
   headlineMedium: TextStyle(
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: FontWeight.w400,
   ),
   titleLarge: TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w700,
-    color: Colors.white,
   ),
   titleMedium: TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w500,
-    color: Colors.white,
   ),
   titleSmall: TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w400,
-    color: Colors.white,
   ),
   bodyLarge: TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w500,
-    color: constants.Colors.grey,
   ),
   bodyMedium: TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w500,
-    color: constants.Colors.grey,
   ),
   labelMedium: TextStyle(
     fontSize: 16,
-    fontWeight: FontWeight.w400,
-    color: constants.Colors.redSelected,
+    fontWeight: FontWeight.w500,
   ),
 );

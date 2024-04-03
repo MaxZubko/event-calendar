@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:event_calendar_app/cubit/theme/cubit/theme_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,194 +46,219 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Container(
-      decoration: const BoxDecoration(
-        color: constants.Colors.dark,
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
-        ),
-      ),
-      child: SizedBox(
-        width: double.infinity,
-        child: CustomScrollView(
-          physics: const NeverScrollableScrollPhysics(),
-          slivers: [
-            _appBar(theme),
-            _sliverGap(15),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Container(
-                  height: 45,
-                  decoration: BoxDecoration(
-                    color: constants.Colors.white.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: TextField(
-                    controller: _controller..text = _title ?? '',
-                    style: const TextStyle(color: constants.Colors.white),
-                    decoration: InputDecoration(
-                      hintText: 'Title',
-                      hintStyle: TextStyle(
-                          color: constants.Colors.grey.withOpacity(0.5)),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                      ),
-                      enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                      ),
-                      border: const OutlineInputBorder(
-                        borderSide: BorderSide.none,
+    return BlocBuilder<ThemeCubit, ThemeState>(
+      builder: (context, state) {
+        final bool isDarkTheme = state.isDark;
+
+        return ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              color:
+                  isDarkTheme ? constants.Colors.dark : constants.Colors.white,
+            ),
+            child: SizedBox(
+              width: double.infinity,
+              child: CustomScrollView(
+                physics: const NeverScrollableScrollPhysics(),
+                slivers: [
+                  _appBar(theme),
+                  _sliverGap(15),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Container(
+                        height: 45,
+                        decoration: BoxDecoration(
+                          color: isDarkTheme
+                              ? constants.Colors.white.withOpacity(0.1)
+                              : constants.Colors.dark.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: TextField(
+                          controller: _controller..text = _title ?? '',
+                          style: TextStyle(
+                            color: isDarkTheme
+                                ? constants.Colors.white
+                                : constants.Colors.dark,
+                          ),
+                          decoration: InputDecoration(
+                            hintText: 'Title',
+                            hintStyle: TextStyle(
+                              color: isDarkTheme
+                                  ? constants.Colors.grey.withOpacity(0.5)
+                                  : constants.Colors.dark.withOpacity(0.5),
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                            ),
+                            border: const OutlineInputBorder(
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                          onChanged: (title) {
+                            _title = title;
+                          },
+                        ),
                       ),
                     ),
-                    onChanged: (title) {
-                      _title = title;
-                    },
                   ),
-                ),
-              ),
-            ),
-            _sliverGap(25),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                  decoration: BoxDecoration(
-                    color: constants.Colors.white.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Column(
-                    children: [
-                      DateTimeSectionBottomSheet(
-                        title: 'Starts',
-                        initDate: _formatTime(_startDate, _startTime, _now),
-                        initTime: _startTime ?? TimeOfDay.fromDateTime(_now),
-                        onTapFirestBtn: () async {
-                          if (_isIos) {
-                            await PickerUtils.showCupertinoSheet(
-                                context: context,
-                                child: buildCupertinoPicker(
-                                  mode: CupertinoDatePickerMode.date,
-                                  initialDateTime: _startDate ?? _now,
-                                ),
-                                onClicked: () {
-                                  context.pop();
-                                });
-                          } else {
-                            final startDate =
-                                await PickerUtils.showMaterialDateSheet(
-                              context: context,
-                              initialDate: _startDate ?? _now,
-                              firstDate: DateTime(2000, 1),
-                              lastDate: DateTime(2100, 12),
-                            );
-
-                            setState(() {
-                              _startDate = startDate ?? _now;
-                            });
-                          }
-                        },
-                        onTapSecondBtn: () async {
-                          if (_isIos) {
-                            await PickerUtils.showCupertinoSheet(
-                              context: context,
-                              child: buildCupertinoPicker(
-                                mode: CupertinoDatePickerMode.time,
-                                initialDateTime:
-                                    _formatTime(_startDate, _startTime, _now),
-                              ),
-                              onClicked: () {
-                                context.pop();
-                              },
-                            );
-                          } else {
-                            final startTime =
-                                await PickerUtils.showMaterialTimeSheet(
-                              context: context,
-                              initialTime:
+                  _sliverGap(25),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 15),
+                        decoration: BoxDecoration(
+                          color: isDarkTheme
+                              ? constants.Colors.white.withOpacity(0.1)
+                              : constants.Colors.dark.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Column(
+                          children: [
+                            DateTimeSectionBottomSheet(
+                              title: 'Starts',
+                              initDate:
+                                  _formatTime(_startDate, _startTime, _now),
+                              initTime:
                                   _startTime ?? TimeOfDay.fromDateTime(_now),
-                            );
+                              isDarkTheme: isDarkTheme,
+                              onTapFirestBtn: () async {
+                                if (_isIos) {
+                                  await PickerUtils.showCupertinoSheet(
+                                      context: context,
+                                      child: buildCupertinoPicker(
+                                        mode: CupertinoDatePickerMode.date,
+                                        initialDateTime: _startDate ?? _now,
+                                      ),
+                                      onClicked: () {
+                                        context.pop();
+                                      });
+                                } else {
+                                  final startDate =
+                                      await PickerUtils.showMaterialDateSheet(
+                                    context: context,
+                                    initialDate: _startDate ?? _now,
+                                    firstDate: DateTime(2000, 1),
+                                    lastDate: DateTime(2100, 12),
+                                  );
 
-                            setState(() {
-                              _startTime =
-                                  startTime ?? TimeOfDay.fromDateTime(_now);
-                            });
-                          }
-                        },
-                      ),
-                      const SizedBox(height: 15),
-                      DateTimeSectionBottomSheet(
-                        title: 'Ends',
-                        initDate: _formatTime(_endDate, _endTime, _now),
-                        initTime: _endTime ??
-                            TimeOfDay.fromDateTime(
-                              _now.add(
-                                const Duration(hours: 1),
-                              ),
-                            ),
-                        onTapFirestBtn: () async {
-                          if (_isIos) {
-                            await PickerUtils.showCupertinoSheet(
-                                context: context,
-                                child: buildCupertinoPicker(
-                                  mode: CupertinoDatePickerMode.date,
-                                  isStarts: false,
-                                  initialDateTime:
-                                      _formatTime(_endDate, _endTime, _now),
-                                ),
-                                onClicked: () {
-                                  context.pop();
-                                });
-                          } else {
-                            final endDate =
-                                await PickerUtils.showMaterialDateSheet(
-                              context: context,
-                              initialDate: _endDate ?? _now,
-                              firstDate: DateTime(2000, 1),
-                              lastDate: DateTime(2100, 12),
-                            );
-                            setState(() {
-                              _endDate = endDate;
-                            });
-                          }
-                        },
-                        onTapSecondBtn: () async {
-                          if (_isIos) {
-                            await PickerUtils.showCupertinoSheet(
-                              context: context,
-                              child: buildCupertinoPicker(
-                                mode: CupertinoDatePickerMode.time,
-                                isStarts: false,
-                                initialDateTime: _endDate ?? _now,
-                              ),
-                              onClicked: () {
-                                context.pop();
+                                  setState(() {
+                                    _startDate = startDate ?? _now;
+                                  });
+                                }
                               },
-                            );
-                          } else {
-                            final endTime =
-                                await PickerUtils.showMaterialTimeSheet(
-                              context: context,
-                              initialTime:
-                                  _endTime ?? TimeOfDay.fromDateTime(_now),
-                            );
+                              onTapSecondBtn: () async {
+                                if (_isIos) {
+                                  await PickerUtils.showCupertinoSheet(
+                                    context: context,
+                                    child: buildCupertinoPicker(
+                                      mode: CupertinoDatePickerMode.time,
+                                      initialDateTime: _formatTime(
+                                          _startDate, _startTime, _now),
+                                    ),
+                                    onClicked: () {
+                                      context.pop();
+                                    },
+                                  );
+                                } else {
+                                  final startTime =
+                                      await PickerUtils.showMaterialTimeSheet(
+                                    context: context,
+                                    initialTime: _startTime ??
+                                        TimeOfDay.fromDateTime(_now),
+                                  );
 
-                            setState(() {
-                              _endTime = endTime;
-                            });
-                          }
-                        },
+                                  setState(() {
+                                    _startTime = startTime ??
+                                        TimeOfDay.fromDateTime(_now);
+                                  });
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 15),
+                            DateTimeSectionBottomSheet(
+                              title: 'Ends',
+                              initDate: _formatTime(_endDate, _endTime, _now),
+                              initTime: _endTime ??
+                                  TimeOfDay.fromDateTime(
+                                    _now.add(
+                                      const Duration(hours: 1),
+                                    ),
+                                  ),
+                              isDarkTheme: isDarkTheme,
+                              onTapFirestBtn: () async {
+                                if (_isIos) {
+                                  await PickerUtils.showCupertinoSheet(
+                                      context: context,
+                                      child: buildCupertinoPicker(
+                                        mode: CupertinoDatePickerMode.date,
+                                        isStarts: false,
+                                        initialDateTime: _formatTime(
+                                            _endDate, _endTime, _now),
+                                      ),
+                                      onClicked: () {
+                                        context.pop();
+                                      });
+                                } else {
+                                  final endDate =
+                                      await PickerUtils.showMaterialDateSheet(
+                                    context: context,
+                                    initialDate: _endDate ?? _now,
+                                    firstDate: DateTime(2000, 1),
+                                    lastDate: DateTime(2100, 12),
+                                  );
+                                  setState(() {
+                                    _endDate = endDate;
+                                  });
+                                }
+                              },
+                              onTapSecondBtn: () async {
+                                if (_isIos) {
+                                  await PickerUtils.showCupertinoSheet(
+                                    context: context,
+                                    child: buildCupertinoPicker(
+                                      mode: CupertinoDatePickerMode.time,
+                                      isStarts: false,
+                                      initialDateTime: _endDate ?? _now,
+                                    ),
+                                    onClicked: () {
+                                      context.pop();
+                                    },
+                                  );
+                                } else {
+                                  final endTime =
+                                      await PickerUtils.showMaterialTimeSheet(
+                                    context: context,
+                                    initialTime: _endTime ??
+                                        TimeOfDay.fromDateTime(_now),
+                                  );
+
+                                  setState(() {
+                                    _endTime = endTime;
+                                  });
+                                }
+                              },
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -253,7 +279,7 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
       actions: [
         TextButton(
           onPressed: () {
-            _onTapEvent(context);
+            _onTapEvent(context, _getNewModel);
           },
           child: Text(
             'Add',
@@ -288,25 +314,27 @@ class _EventBottomSheetState extends State<EventBottomSheet> {
         ),
       );
 
-  void _onTapEvent(BuildContext context) {
-    context.pop(
-      CalendarEventModel(
-        title: _title ?? 'New Event',
-        startTime: _formatTime(_startDate, _startTime, _now),
-        endTime: _formatTime(
-          _endDate,
-          _endTime,
-          _now.add(
-            const Duration(hours: 1),
-          ),
-        ),
-        eventId: _eventId ?? const Uuid().v4(),
-        notifyId: NotifyUtils().creatingIdForNotify(
-          timestamp:
-              _formatTime(_startDate, _startTime, _now).millisecondsSinceEpoch,
+  CalendarEventModel get _getNewModel {
+    return CalendarEventModel(
+      title: _title ?? 'New Event',
+      startTime: _formatTime(_startDate, _startTime, _now),
+      endTime: _formatTime(
+        _endDate,
+        _endTime,
+        _now.add(
+          const Duration(hours: 1),
         ),
       ),
+      eventId: _eventId ?? const Uuid().v4(),
+      notifyId: NotifyUtils().creatingIdForNotify(
+        timestamp:
+            _formatTime(_startDate, _startTime, _now).millisecondsSinceEpoch,
+      ),
     );
+  }
+
+  void _onTapEvent(BuildContext context, CalendarEventModel model) {
+    context.pop(model);
   }
 
   DateTime _formatTime(DateTime? date, TimeOfDay? time, DateTime now) {

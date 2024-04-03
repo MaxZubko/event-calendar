@@ -1,4 +1,5 @@
-import 'package:event_calendar_app/cubit/calendar_event_cubit.dart';
+import 'package:event_calendar_app/cubit/calendar_event/calendar_event_cubit.dart';
+import 'package:event_calendar_app/cubit/theme/cubit/theme_cubit.dart';
 import 'package:event_calendar_app/features/home/cubit/calendar_cubit.dart';
 import 'package:event_calendar_app/features/home/widgets/widget.dart';
 import 'package:event_calendar_app/services/firestore_service/models/models.dart';
@@ -74,59 +75,75 @@ class _CalendarBodyState extends State<CalendarBody> {
                             day: day,
                           );
 
-                          return GestureDetector(
-                            onTap: () {
-                              final calendarCubit =
-                                  context.read<CalendarCubit>();
-                              calendarCubit.changeDate(
-                                currentDate: calendarState.currentDate,
-                                day: day,
-                              );
-                            },
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: 30,
-                                  width: 30,
-                                  alignment: Alignment.center,
-                                  decoration: isCurrent
-                                      ? const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: constants.Colors.greenSelected,
-                                        )
-                                      : null,
-                                  child: Container(
-                                    height: 35,
-                                    width: 35,
+                          return BlocBuilder<ThemeCubit, ThemeState>(
+                              builder: (context, state) {
+                            bool isDarkTheme = state.isDark;
+
+                            return GestureDetector(
+                              onTap: () {
+                                final calendarCubit =
+                                    context.read<CalendarCubit>();
+                                calendarCubit.changeDate(
+                                  currentDate: calendarState.currentDate,
+                                  day: day,
+                                );
+                              },
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: 30,
+                                    width: 30,
                                     alignment: Alignment.center,
-                                    child: Text(
-                                      day.toString(),
-                                      style: isCurrent
-                                          ? theme.textTheme.bodyLarge!.copyWith(
-                                              color: constants.Colors.white)
-                                          : theme.textTheme.bodyLarge,
-                                    ),
-                                  ),
-                                ),
-                                if (hasEventForDate)
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 3),
+                                    decoration: isCurrent
+                                        ? BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: isDarkTheme
+                                                ? constants.Colors.greenSelected
+                                                : constants.Colors.redSelected,
+                                          )
+                                        : null,
                                     child: Container(
-                                      width: 5,
-                                      height: 5,
+                                      height: 35,
+                                      width: 35,
                                       alignment: Alignment.center,
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 8,
-                                      ),
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.grey,
+                                      child: Text(
+                                        day.toString(),
+                                        style: isCurrent
+                                            ? theme.textTheme.bodyLarge
+                                                ?.copyWith(
+                                                    color:
+                                                        constants.Colors.white)
+                                            : theme.textTheme.bodyLarge
+                                                ?.copyWith(
+                                                color: isDarkTheme
+                                                    ? constants.Colors.grey
+                                                    : constants.Colors.greyDark,
+                                              ),
                                       ),
                                     ),
                                   ),
-                              ],
-                            ),
-                          );
+                                  if (hasEventForDate)
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 3),
+                                      child: Container(
+                                        width: 5,
+                                        height: 5,
+                                        alignment: Alignment.center,
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 8,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: isDarkTheme
+                                              ? constants.Colors.grey
+                                              : constants.Colors.greyDark,
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            );
+                          });
                         },
                         // childCount: daysInMonth + firstDayOfWeek,
                       ),

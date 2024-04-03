@@ -1,4 +1,5 @@
-import 'package:event_calendar_app/cubit/calendar_event_cubit.dart';
+import 'package:event_calendar_app/cubit/calendar_event/calendar_event_cubit.dart';
+import 'package:event_calendar_app/cubit/theme/cubit/theme_cubit.dart';
 import 'package:event_calendar_app/features/home/cubit/calendar_cubit.dart';
 import 'package:event_calendar_app/get_it_initializer.dart';
 import 'package:event_calendar_app/router/app_route_config.dart';
@@ -45,11 +46,18 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(
           create: (context) => getIt<CalendarEventCubit>(),
         ),
+        BlocProvider(
+          create: (context) => getIt<ThemeCubit>(),
+        ),
       ],
-      child: MaterialApp.router(
-        theme: darkTheme,
-        debugShowCheckedModeBanner: false,
-        routerConfig: getIt<AppRoute>().router,
+      child: BlocBuilder<ThemeCubit, ThemeState>(
+        builder: (context, state) {
+          return MaterialApp.router(
+            theme: state.isDark ? darkTheme : lightTheme,
+            debugShowCheckedModeBanner: false,
+            routerConfig: getIt<AppRoute>().router,
+          );
+        },
       ),
     );
   }

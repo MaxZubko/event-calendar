@@ -23,7 +23,9 @@ class CalendarCubit extends Cubit<CalendarState> {
     required DateTime currentDate,
     required int day,
   }) {
-    _selectedDate = DateTime(currentDate.year, currentDate.month, day);
+    DateTime now = DateTime.now();
+    _selectedDate = DateTime(
+        currentDate.year, currentDate.month, day, now.hour, now.minute);
     emit(CalendarState(currentDate, _selectedDate));
   }
 }

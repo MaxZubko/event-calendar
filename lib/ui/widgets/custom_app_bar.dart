@@ -1,14 +1,19 @@
+import 'package:event_calendar_app/cubit/theme/cubit/theme_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:event_calendar_app/constants/constants.dart' as constants;
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Icon? iconActionBtn;
   final VoidCallback? onPressed;
+  final TextStyle? textStyle;
   const CustomAppBar({
     super.key,
     required this.title,
     this.iconActionBtn,
     this.onPressed,
+    this.textStyle,
   });
 
   @override
@@ -16,15 +21,24 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(
         title,
-        style: const TextStyle(fontSize: 18),
+        style: textStyle,
       ),
       surfaceTintColor: Colors.transparent,
       centerTitle: true,
       actions: iconActionBtn != null
           ? [
-              IconButton(
-                onPressed: onPressed,
-                icon: iconActionBtn!,
+              Builder(
+                builder: (context) {
+                  final isDarkTheme = context.watch<ThemeCubit>().state.isDark;
+
+                  return IconButton(
+                    onPressed: onPressed,
+                    icon: iconActionBtn!,
+                    color: isDarkTheme
+                        ? constants.Colors.white
+                        : constants.Colors.dark,
+                  );
+                },
               ),
             ]
           : null,
