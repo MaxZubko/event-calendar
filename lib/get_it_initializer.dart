@@ -47,8 +47,8 @@ void getItInitializer() async {
     SettingsRepository(),
   );
 
-  getIt.registerSingleton<ThemeCubit>(
-    ThemeCubit(
+  getIt.registerFactory<ThemeCubit>(
+    () => ThemeCubit(
       settingsRepository: getIt<SettingsRepository>(),
     ),
   );
