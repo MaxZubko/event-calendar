@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:event_calendar_app/repositories/doc_id_repository/doc_id.dart';
 import 'package:event_calendar_app/services/services.dart';
 import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
@@ -10,8 +11,7 @@ part 'calendar_event_state.dart';
 
 class CalendarEventCubit extends Cubit<CalendarEventState> {
   CalendarEventCubit(
-      {required FirestoreService service,
-      required LocalDatabaseService localDb})
+      {required FirestoreService service, required DocIdRepository localDb})
       : _service = service,
         _localDb = localDb,
         super(CalendarEventInitial()) {
@@ -19,7 +19,7 @@ class CalendarEventCubit extends Cubit<CalendarEventState> {
   }
 
   final FirestoreService _service;
-  final LocalDatabaseService _localDb;
+  final DocIdRepository _localDb;
 
   final _controller = StreamController<List<CalendarEventModel>>.broadcast();
   Stream<List<CalendarEventModel>> get listStream => _controller.stream;

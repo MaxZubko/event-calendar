@@ -3,7 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-import 'package:event_calendar_app/cubit/calendar_event_cubit.dart';
+import 'package:event_calendar_app/constants/constants.dart' as constants;
+import 'package:event_calendar_app/cubit/calendar_event/calendar_event_cubit.dart';
 import 'package:event_calendar_app/get_it_initializer.dart';
 import 'package:event_calendar_app/services/services.dart';
 import 'package:event_calendar_app/ui/widgets/widget.dart';
@@ -29,6 +30,7 @@ class EventDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Event Details',
+        textStyle: theme.textTheme.headlineMedium,
         iconActionBtn: const Icon(Icons.edit),
         onPressed: () => _showSearchBottomSheet(
           context: context,
@@ -40,6 +42,7 @@ class EventDetailsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: 15),
             Align(
               alignment: Alignment.topLeft,
               child: Text(
@@ -67,7 +70,8 @@ class EventDetailsScreen extends StatelessWidget {
                 ),
                 child: Text(
                   'Delete Event',
-                  style: theme.textTheme.labelMedium,
+                  style: theme.textTheme.labelMedium
+                      ?.copyWith(color: constants.Colors.redSelected),
                 ),
               ),
             ),

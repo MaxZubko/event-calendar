@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:event_calendar_app/cubit/calendar_event_cubit.dart';
+import 'package:event_calendar_app/cubit/calendar_event/calendar_event_cubit.dart';
+import 'package:event_calendar_app/cubit/theme/cubit/theme_cubit.dart';
 import 'package:event_calendar_app/features/home/cubit/calendar_cubit.dart';
 import 'package:event_calendar_app/services/services.dart';
 import 'package:get_it/get_it.dart';
 
+import 'repositories/doc_id_repository/doc_id.dart';
+import 'repositories/settings_repository/settings.dart';
 import 'router/app_route_config.dart';
 
 final getIt = GetIt.I;
@@ -21,8 +24,8 @@ void getItInitializer() {
     FirestoreService(db: FirebaseFirestore.instance),
   );
 
-  getIt.registerSingleton<LocalDatabaseService>(
-    LocalDatabaseService(),
+  getIt.registerSingleton<DocIdRepository>(
+    DocIdRepository(),
   );
 
   // registerSingleton because you need to immediately download the list of events
@@ -30,10 +33,20 @@ void getItInitializer() {
   getIt.registerSingleton<CalendarEventCubit>(
     CalendarEventCubit(
       service: getIt<FirestoreService>(),
-      localDb: LocalDatabaseService(),
+      localDb: DocIdRepository(),
     ),
   );
 
-  GetIt.I.registerLazySingleton<LocalNotificationService>(
+  getIt.registerLazySingleton<LocalNotificationService>(
       () => LocalNotificationService());
+
+  getIt.registerSingleton<SettingsRepository>(
+    SettingsRepository(),
+  );
+
+  getIt.registerSingleton<ThemeCubit>(
+    ThemeCubit(
+      settingsRepository: getIt<SettingsRepository>(),
+    ),
+  );
 }

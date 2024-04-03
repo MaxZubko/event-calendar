@@ -8,6 +8,7 @@ class DateTimeSectionBottomSheet extends StatelessWidget {
   final TimeOfDay initTime;
   final VoidCallback onTapFirestBtn;
   final VoidCallback onTapSecondBtn;
+  final bool isDarkTheme;
   const DateTimeSectionBottomSheet({
     super.key,
     required this.title,
@@ -15,6 +16,7 @@ class DateTimeSectionBottomSheet extends StatelessWidget {
     required this.onTapSecondBtn,
     required this.initDate,
     required this.initTime,
+    required this.isDarkTheme,
   });
 
   @override
@@ -33,8 +35,11 @@ class DateTimeSectionBottomSheet extends StatelessWidget {
           child: Container(
             height: 30,
             decoration: BoxDecoration(
-                color: constants.Colors.white.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8)),
+              color: isDarkTheme
+                  ? constants.Colors.white.withOpacity(0.1)
+                  : constants.Colors.dark.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
             padding: const EdgeInsets.symmetric(horizontal: 15),
             alignment: Alignment.center,
             child: Text(
@@ -49,12 +54,17 @@ class DateTimeSectionBottomSheet extends StatelessWidget {
           child: Container(
             height: 30,
             decoration: BoxDecoration(
-                color: constants.Colors.white.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8)),
+              color: isDarkTheme
+                  ? constants.Colors.white.withOpacity(0.1)
+                  : constants.Colors.dark.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
             padding: const EdgeInsets.symmetric(horizontal: 15),
             alignment: Alignment.center,
-            child: Text(_formatTime(context, initTime),
-                style: theme.textTheme.bodyMedium),
+            child: Text(
+              _formatTime(context, initTime),
+              style: theme.textTheme.bodyMedium,
+            ),
           ),
         ),
       ],

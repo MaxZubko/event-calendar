@@ -9,7 +9,7 @@ class LocalNotificationService {
 
   Future<void> initialize() async {
     const AndroidInitializationSettings androidInit =
-        AndroidInitializationSettings('');
+        AndroidInitializationSettings('app-icon');
     DarwinInitializationSettings iosInit = DarwinInitializationSettings(
         requestAlertPermission: true,
         requestBadgePermission: true,
@@ -37,34 +37,37 @@ class LocalNotificationService {
     required DateTime selectedDate,
     required int id,
   }) async {
-    final NotificationDetails details = await _notificationDetails();
-    DateTime now = DateTime.now();
-    final difference = selectedDate.difference(now);
+    // if the date selected by the user is in the future, then create a notification
+    if (_isFutureDate(selectedDate: selectedDate)) {
+      final NotificationDetails details = await _notificationDetails();
+      DateTime now = DateTime.now();
+      final difference = selectedDate.difference(now);
 
-    tz.initializeTimeZones();
+      tz.initializeTimeZones();
 
-    // tz.TZDateTime scheduledTime = tz.TZDateTime.local(
-    //   selectedDate.year,
-    //   selectedDate.month,
-    //   selectedDate.day,
-    //   selectedDate.hour,
-    //   selectedDate.minute,
-    // );
+      // tz.TZDateTime scheduledTime = tz.TZDateTime.local(
+      //   selectedDate.year,
+      //   selectedDate.month,
+      //   selectedDate.day,
+      //   selectedDate.hour,
+      //   selectedDate.minute,
+      // );
 
-    await _localNotificationPlugin.zonedSchedule(
-      id,
-      title,
-      body,
-      // scheduledTime,
-      tz.TZDateTime.now(tz.local).add(difference),
-      details,
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      payload: payload,
-    );
+      await _localNotificationPlugin.zonedSchedule(
+        id,
+        title,
+        body,
+        // scheduledTime,
+        tz.TZDateTime.now(tz.local).add(difference),
+        details,
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        payload: payload,
+      );
 
-    debugPrint(tz.TZDateTime.now(tz.local).add(difference).toString());
+      debugPrint(tz.TZDateTime.now(tz.local).add(difference).toString());
+    }
   }
 
   Future showNotification(
@@ -109,5 +112,11 @@ class LocalNotificationService {
 
   Future<void> cancelNotification(int notifyId) async {
     await _localNotificationPlugin.cancel(notifyId);
+  }
+
+  bool _isFutureDate({required DateTime selectedDate}) {
+    DateTime currentDateTime = DateTime.now();
+
+    return selectedDate.compareTo(currentDateTime) > 0;
   }
 }
