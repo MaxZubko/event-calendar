@@ -11,7 +11,7 @@ import 'router/app_route_config.dart';
 
 final getIt = GetIt.I;
 
-void getItInitializer() {
+void getItInitializer() async {
   getIt.registerSingleton<AppRoute>(
     AppRoute(),
   );
@@ -23,6 +23,9 @@ void getItInitializer() {
   getIt.registerSingleton<FirestoreService>(
     FirestoreService(db: FirebaseFirestore.instance),
   );
+
+  // getIt.registerSingletonAsync(() async => SharedPreferences.getInstance());
+  // await getIt.isReady<SharedPreferences>();
 
   getIt.registerSingleton<DocIdRepository>(
     DocIdRepository(),

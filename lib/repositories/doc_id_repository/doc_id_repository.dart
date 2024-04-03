@@ -4,6 +4,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'doc_id.dart';
 
 class DocIdRepository implements DocIdRepositoryInterface {
+  // final SharedPreferences _sharedPrefs;
+
+  // DocIdRepository({required SharedPreferences sharedPrefs})
+  //     : _sharedPrefs = sharedPrefs;
   @override
   Future<String?> getDocId() async {
     // TODO take out the SharedPreferences instance
