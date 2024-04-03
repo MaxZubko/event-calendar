@@ -34,8 +34,7 @@ class AppRoute {
               GoRoute(
                 path: "/",
                 name: AppRouteNameConstants.homeRoutePath,
-                builder: (BuildContext context, GoRouterState state) =>
-                    const HomeScreen(),
+                builder: (context, state) => const HomeScreen(),
                 routes: [
                   GoRoute(
                     path: 'event-details',
@@ -57,7 +56,7 @@ class AppRoute {
             routes: <RouteBase>[
               GoRoute(
                 path: "/settings",
-                name: "Settings",
+                name: AppRouteNameConstants.settingsRoutePath,
                 builder: (BuildContext context, GoRouterState state) =>
                     const SettingsScreen(),
               ),

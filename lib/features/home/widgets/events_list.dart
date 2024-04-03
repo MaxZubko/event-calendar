@@ -38,6 +38,12 @@ class EventsList extends StatelessWidget {
                   return BlocBuilder<ThemeCubit, ThemeState>(
                     builder: (context, state) {
                       final bool isDarkTheme = state.isDark;
+                      final TextStyle? timeStyle =
+                          theme.textTheme.bodyMedium?.copyWith(
+                        color: isDarkTheme
+                            ? constants.Colors.grey
+                            : constants.Colors.greyDark,
+                      );
 
                       return SliverList.separated(
                         itemCount: eventsList.length,
@@ -65,20 +71,18 @@ class EventsList extends StatelessWidget {
                                           is24HourFormat: is24HourFormat,
                                           dateTime: eventsList[index].startTime,
                                         ),
-                                        style: theme.textTheme.bodyMedium
-                                            ?.copyWith(
-                                          color: isDarkTheme
-                                              ? constants.Colors.grey
-                                              : constants.Colors.greyDark,
-                                        ),
+                                        style: timeStyle,
                                       ),
-                                      const Text(' - '),
+                                      Text(
+                                        ' - ',
+                                        style: timeStyle,
+                                      ),
                                       Text(
                                         DateTimeUtils.formatTime(
                                           is24HourFormat: is24HourFormat,
                                           dateTime: eventsList[index].endTime,
                                         ),
-                                        style: theme.textTheme.bodyMedium,
+                                        style: timeStyle,
                                       ),
                                     ],
                                   ),

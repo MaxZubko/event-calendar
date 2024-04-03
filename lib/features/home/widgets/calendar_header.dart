@@ -1,3 +1,4 @@
+import 'package:event_calendar_app/cubit/theme/cubit/theme_cubit.dart';
 import 'package:event_calendar_app/features/home/cubit/calendar_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,26 +25,32 @@ class CalendarHeader extends StatelessWidget {
         ),
         const Expanded(child: SizedBox()),
         IconButton(
-          icon: SvgPicture.asset(
-            constants.Assets.arrowLeftSvg,
-            color: constants.Colors.white,
-          ),
+          icon: _icon(constants.Assets.arrowLeftSvg),
           onPressed: () {
             final cubit = context.read<CalendarCubit>();
             cubit.previousMonth();
           },
         ),
         IconButton(
-          icon: SvgPicture.asset(
-            constants.Assets.arrowRightSvg,
-            color: constants.Colors.white,
-          ),
+          icon: _icon(constants.Assets.arrowRightSvg),
           onPressed: () {
             final cubit = context.read<CalendarCubit>();
             cubit.nextMonth();
           },
         ),
       ],
+    );
+  }
+
+  Widget _icon(String path) {
+    return BlocBuilder<ThemeCubit, ThemeState>(
+      builder: (context, state) {
+        final bool isDarkTheme = state.isDark;
+        return SvgPicture.asset(
+          path,
+          color: isDarkTheme ? constants.Colors.white : constants.Colors.dark,
+        );
+      },
     );
   }
 

@@ -32,16 +32,9 @@ class DateTimeSectionBottomSheet extends StatelessWidget {
         const Expanded(child: SizedBox()),
         GestureDetector(
           onTap: onTapFirestBtn,
-          child: Container(
-            height: 30,
-            decoration: BoxDecoration(
-              color: isDarkTheme
-                  ? constants.Colors.white.withOpacity(0.1)
-                  : constants.Colors.dark.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            alignment: Alignment.center,
+          child: _baseContainer(
+            context: context,
+            theme: theme,
             child: Text(
               _formatDate(initDate),
               style: theme.textTheme.bodyMedium,
@@ -51,16 +44,9 @@ class DateTimeSectionBottomSheet extends StatelessWidget {
         const SizedBox(width: 5),
         GestureDetector(
           onTap: onTapSecondBtn,
-          child: Container(
-            height: 30,
-            decoration: BoxDecoration(
-              color: isDarkTheme
-                  ? constants.Colors.white.withOpacity(0.1)
-                  : constants.Colors.dark.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            alignment: Alignment.center,
+          child: _baseContainer(
+            context: context,
+            theme: theme,
             child: Text(
               _formatTime(context, initTime),
               style: theme.textTheme.bodyMedium,
@@ -68,6 +54,25 @@ class DateTimeSectionBottomSheet extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _baseContainer({
+    required BuildContext context,
+    required ThemeData theme,
+    required child,
+  }) {
+    return Container(
+      height: 30,
+      decoration: BoxDecoration(
+        color: isDarkTheme
+            ? constants.Colors.white.withOpacity(0.1)
+            : constants.Colors.dark.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      alignment: Alignment.center,
+      child: child,
     );
   }
 
