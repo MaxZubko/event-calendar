@@ -43,8 +43,8 @@ void getItInitializer() async {
   getIt.registerLazySingleton<LocalNotificationService>(
       () => LocalNotificationService());
 
-  getIt.registerSingleton<SettingsRepository>(
-    SettingsRepository(),
+  getIt.registerLazySingleton<SettingsRepository>(
+    () => SettingsRepository(),
   );
 
   getIt.registerFactory<ThemeCubit>(
